@@ -151,19 +151,19 @@ sub call {
 =item logger
 
   # traffic.l4p
-  log4perl.logger.access = DEBUG, LogfileTraffic
+  log4perl.logger.traffic = DEBUG, LogfileTraffic
   log4perl.appender.LogfileTraffic = Log::Log4perl::Appender::File
   log4perl.appender.LogfileTraffic.filename = traffic.log
   log4perl.appender.LogfileTraffic.layout = PatternLayout
   log4perl.appender.LogfileTraffic.layout.ConversionPattern = %m{chomp}%n
 
-  # app.psgi
+  # log4perl.psgi
   use Log::Log4perl qw(:levels get_logger);
   Log::Log4perl->init('traffic.l4p');
   my $logger = get_logger('traffic');
 
   enable "Plack::Middleware::TrafficLog",
-      logger => sub { $logger->log(log($INFO, join '', @_) };
+      logger => sub { $logger->log($INFO, join '', @_) };
 
 Sets a callback to print log message to. It prints to C<psgi.errors>
 output stream by default.
