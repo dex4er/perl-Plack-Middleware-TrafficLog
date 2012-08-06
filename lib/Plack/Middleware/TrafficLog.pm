@@ -2,7 +2,7 @@ package Plack::Middleware::TrafficLog;
 
 =head1 NAME
 
-Plack::Middleware::TrafficLog - Log request and response message
+Plack::Middleware::TrafficLog - Log request and response messages
 
 =head1 SYNOPSIS
 
@@ -15,7 +15,7 @@ Plack::Middleware::TrafficLog - Log request and response message
 
 =head1 DESCRIPTION
 
-This middleware logs the request and response message with detailed
+This middleware logs the request and response messages with detailed
 informations.
 
 =for readme stop
@@ -47,7 +47,7 @@ sub prepare_app {
     $self->with_request(1)  unless defined $self->with_request;
     $self->with_response(1) unless defined $self->with_response;
     $self->with_date(1)     unless defined $self->with_date;
-    $self->with_body(defined $self->logger ? '' : 1)       unless defined $self->with_body;
+    $self->with_body(1)     unless defined $self->with_body;
     $self->eol('|')         unless defined $self->eol;
     $self->body_eol(defined $self->eol ? $self->eol : ' ') unless defined $self->body_eol;
 };
@@ -144,11 +144,37 @@ sub call {
 1;
 
 
+=head1 CONFIGURATION
+
+=over 4
+
+=item logger
+
+  # traffic.l4p
+  log4perl.logger.access = DEBUG, LogfileTraffic
+  log4perl.appender.LogfileTraffic = Log::Log4perl::Appender::File
+  log4perl.appender.LogfileTraffic.filename = traffic.log
+  log4perl.appender.LogfileTraffic.layout = PatternLayout
+  log4perl.appender.LogfileTraffic.layout.ConversionPattern = [%d{ISO8601}] %m{chomp}%n
+
+  # app.psgi
+  use Log::Log4perl qw(:levels get_logger);
+  Log::Log4perl->init('traffic.l4p');
+  my $logger = get_logger('traffic');
+
+  enable "Plack::Middleware::TrafficLog",
+      logger => sub { $logger->log(log($INFO, join '', @_) };
+
+Sets a callback to print log message to. It prints to C<psgi.errors>
+output stream by default.
+
+=back
+
 =for readme continue
 
 =head1 SEE ALSO
 
-L<Plack>.
+L<Plack>, L<Plack::Middleware::AccessLog>.
 
 =head1 BUGS
 
