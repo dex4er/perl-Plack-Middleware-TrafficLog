@@ -64,7 +64,7 @@ sub _strftime {
 
 
 sub _log_message {
-    my ($self, $type, $env, $topline, $headers, $body) = @_;
+    my ($self, $type, $env, $status, $headers, $body) = @_;
 
     my $logger = $self->logger || sub { $env->{'psgi.errors'}->print(@_) };
 
@@ -79,7 +79,7 @@ sub _log_message {
         : '';
 
     $logger->( sprintf
-        "%s[%s] [%s -> %s] [%s] %s%s%s%s%s\n",
+        "%s[%s] [%s -> %s] [%s] %s%s%s%s%s%s\n",
 
         $date,
         Scalar::Util::refaddr $env->{'psgi.input'} || '?',
@@ -88,7 +88,8 @@ sub _log_message {
 
         $type,
 
-        $topline,
+        $eol,
+        $status,
         $eol,
         $headers->as_string($eol),
         $eol,
@@ -102,11 +103,11 @@ sub _log_request {
 
     my $req = Plack::Request->new($env);
 
-    my $topline = sprintf '%s %s %s', $req->method, $req->request_uri, $req->protocol,
+    my $status = sprintf '%s %s %s', $req->method, $req->request_uri, $req->protocol,
     my $headers = $req->headers;
     my $body = $self->with_body ? $req->content : '';
 
-    $self->_log_message('Request', $env, $topline, $headers, $body);
+    $self->_log_message('Request', $env, $status, $headers, $body);
 };
 
 
@@ -115,13 +116,13 @@ sub _log_response {
 
     my $res = Plack::Response->new(@$ret);
 
-    my $topline = sprintf 'HTTP/1.0 %s %s',
+    my $status = sprintf 'HTTP/1.0 %s %s',
         $res->status,
         HTTP::Status::status_message($res->status);
     my $headers = $res->headers;
     my $body = $self->with_body ? (join '', @{$res->body}) : '';
 
-    $self->_log_message('Response', $env, $topline, $headers, $body);
+    $self->_log_message('Response', $env, $status, $headers, $body);
 };
 
 
