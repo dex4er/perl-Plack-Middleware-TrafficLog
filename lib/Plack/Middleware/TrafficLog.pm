@@ -48,8 +48,8 @@ sub prepare_app {
     $self->with_response(1) unless defined $self->with_response;
     $self->with_date(1)     unless defined $self->with_date;
     $self->with_body(1)     unless defined $self->with_body;
-    $self->eol('|')         unless defined $self->eol;
     $self->body_eol(defined $self->eol ? $self->eol : ' ') unless defined $self->body_eol;
+    $self->eol('|')         unless defined $self->eol;
 };
 
 
@@ -155,7 +155,7 @@ sub call {
   log4perl.appender.LogfileTraffic = Log::Log4perl::Appender::File
   log4perl.appender.LogfileTraffic.filename = traffic.log
   log4perl.appender.LogfileTraffic.layout = PatternLayout
-  log4perl.appender.LogfileTraffic.layout.ConversionPattern = [%d{ISO8601}] %m{chomp}%n
+  log4perl.appender.LogfileTraffic.layout.ConversionPattern = %m{chomp}%n
 
   # app.psgi
   use Log::Log4perl qw(:levels get_logger);
@@ -167,6 +167,33 @@ sub call {
 
 Sets a callback to print log message to. It prints to C<psgi.errors>
 output stream by default.
+
+=item with_request
+
+The false value disables logging of request message.
+
+=item with_response
+
+The false value disables logging of response message.
+
+=item with_date
+
+The false value disables logging of current date.
+
+=item with_body
+
+The false value disables logging of message's body.
+
+=item eol
+
+Sets the line separator for message's headers and body. The default
+value is the pipe character C<|>.
+
+=item body_eol
+
+Sets the line separator for message's body only. The default is the
+space character C< >. The default value is used only if B<eol> is also
+undefined.
 
 =back
 
