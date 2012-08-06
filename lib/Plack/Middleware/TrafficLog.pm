@@ -16,7 +16,7 @@ Plack::Middleware::TrafficLog - Log request and response messages
 =head1 DESCRIPTION
 
 This middleware logs the request and response messages with detailed
-informations.
+information.
 
 =for readme stop
 
