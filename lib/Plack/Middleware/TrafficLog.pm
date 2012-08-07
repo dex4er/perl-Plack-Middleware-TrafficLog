@@ -140,7 +140,12 @@ sub call {
     # Postprocessing
     return $self->with_response ? $self->response_cb($res, sub {
         my ($ret) = @_;
-        $self->_log_response($env, $ret);
+        return sub {
+            my ($chunk) = @_;
+            return unless defined $chunk;
+            $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ] );
+            return $chunk;
+        };
     }) : $res;
 };
 
