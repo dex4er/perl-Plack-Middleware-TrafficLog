@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 32;
+use Test::More tests => 35;
 
 use HTTP::Request::Common;
 use Plack::Test;
@@ -151,6 +151,21 @@ my $test = sub {
         like $log[1], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Response\] \|HTTP/1.0 200 OK\|Content-Type: text/plain\|\|OK $}, 'streaming [1]';
         like $log[2], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Response\] \|HTTP/1.0 200 OK\|Content-Type: text/plain\|\|OK $}, 'streaming [2]';
     }
+
+    {
+        my $app_static_499 = sub {
+            [ 499, [ 'Content-Type' => 'text/plain' ], ["Unknown error\n"] ]
+        };
+
+        {
+            local @log;
+            $test->($app_static_499)->($req);
+            is @log, 2, 'error 499 [lines]';
+            like $log[0], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Request\] \|POST / HTTP/1.1\|Host: example.com\|Content-Length: 10|Content-Type: text/plain\|\|TEST TEST\|\|$}, 'error 499 [0]';
+            like $log[1], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Response\] \|HTTP/1.0 499 \|Content-Type: text/plain\|\|Unknown error $}, 'error 499 [1]';
+        }
+    }
+
 }
 
 done_testing;

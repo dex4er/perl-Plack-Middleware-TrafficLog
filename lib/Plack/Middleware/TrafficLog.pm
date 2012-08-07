@@ -122,9 +122,10 @@ sub _log_response {
 
     my $res = Plack::Response->new(@$ret);
 
-    my $status = sprintf 'HTTP/1.0 %s %s',
-        $res->status,
-        HTTP::Status::status_message($res->status);
+    my $status_code = $res->status;
+    my $status_message = HTTP::Status::status_message($status_code);
+
+    my $status = sprintf 'HTTP/1.0 %s %s', $status_code, defined $status_message ? $status_message : '';
     my $headers = $res->headers;
     my $body = $self->with_body ? $res->body : '';
     $body = join '', grep { defined $_ } @$body if defined $body && ref $body eq 'ARRAY';
