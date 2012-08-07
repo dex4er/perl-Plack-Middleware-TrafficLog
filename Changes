@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------
 0.02 | Piotr Roszatycki <dexter@cpan.org> | 2012-08-07
 
+* Delayed reponse is now supported.
 * Build does not require Test::Exception.
 
 ------------------------------------------------------------------------

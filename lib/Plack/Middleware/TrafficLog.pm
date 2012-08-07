@@ -33,6 +33,8 @@ our $VERSION = '0.02';
 use parent qw(Plack::Middleware);
 use Plack::Util::Accessor qw( with_request with_response with_date with_body eol body_eol logger );
 
+use Plack::Util;
+
 use Plack::Request;
 use Plack::Response;
 
@@ -133,12 +135,13 @@ sub call {
     $self->_log_request($env) if $self->with_request;
 
     # $self->app is the original app
-    my $ret = $self->app->($env);
+    my $res = $self->app->($env);
 
     # Postprocessing
-    $self->_log_response($env, $ret) if $self->with_response;
-
-    return $ret;
+    return $self->with_response ? $self->response_cb($res, sub {
+        my ($res) = @_;
+        $self->_log_response($env, $res);
+    }) : $res;
 };
 
 
