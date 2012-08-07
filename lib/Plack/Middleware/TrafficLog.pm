@@ -114,7 +114,7 @@ sub _log_request {
 
 
 sub _log_response {
-    my ($self, $env, $ret, $logger) = @_;
+    my ($self, $env, $ret) = @_;
 
     my $res = Plack::Response->new(@$ret);
 
@@ -139,8 +139,8 @@ sub call {
 
     # Postprocessing
     return $self->with_response ? $self->response_cb($res, sub {
-        my ($res) = @_;
-        $self->_log_response($env, $res);
+        my ($ret) = @_;
+        $self->_log_response($env, $ret);
     }) : $res;
 };
 
