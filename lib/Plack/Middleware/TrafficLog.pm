@@ -139,7 +139,7 @@ sub call {
     $self->_log_response($env, $ret) if $self->with_response;
 
     return $ret;
-}
+};
 
 
 1;
