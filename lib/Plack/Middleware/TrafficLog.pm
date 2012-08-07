@@ -18,6 +18,10 @@ Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
 This middleware logs the request and response messages with detailed
 information.
 
+This module works also with applications which have delayed response. In that
+case each chunk is logged separately and shares the same ID number and
+headers.
+
 =for readme stop
 
 =cut
