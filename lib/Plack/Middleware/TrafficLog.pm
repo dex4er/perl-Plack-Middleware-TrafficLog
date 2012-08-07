@@ -126,7 +126,9 @@ sub _log_response {
         $res->status,
         HTTP::Status::status_message($res->status);
     my $headers = $res->headers;
-    my $body = $self->with_body ? (join '', @{$res->body}) : '';
+    my $body = $self->with_body ? $res->body : '';
+    $body = join '', grep { defined $_ } @$body if defined $body && ref $body eq 'ARRAY';
+    $body = '' unless defined $body;
 
     $self->_log_message('Response', $env, $status, $headers, $body);
 };
@@ -144,10 +146,12 @@ sub call {
     # Postprocessing
     return $self->with_response ? $self->response_cb($res, sub {
         my ($ret) = @_;
+        my $seen;
         return sub {
             my ($chunk) = @_;
-            return unless defined $chunk;
+            return if not defined $chunk and $seen;
             $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ] );
+            $seen = 1;
             return $chunk;
         };
     }) : $res;

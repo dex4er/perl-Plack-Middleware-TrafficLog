@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More ;#tests => 22;
+use Test::More tests => 32;
 
 use HTTP::Request::Common;
 use Plack::Test;
@@ -24,10 +24,11 @@ my $test = sub {
     };
 };
 
-my $req = POST 'http://example.com/', Content => "TEST\nTEST\n";
-$req->header('Host' => 'example.com', 'Content-Type' => 'text/plain');
 
 {
+    my $req = POST 'http://example.com/', Content => "TEST\nTEST\n";
+    $req->header('Host' => 'example.com', 'Content-Type' => 'text/plain');
+
     my $app_static = sub {
         [ 200, [ 'Content-Type' => 'text/plain' ], [ "OK\nOK\n" ] ]
     };
@@ -92,6 +93,22 @@ $req->header('Host' => 'example.com', 'Content-Type' => 'text/plain');
         is @log, 2, 'with body_eol [lines]';
         like $log[0], qr{^\[\d+\] \[127.0.0.1 -> example.com:80\] \[Request\] !POST / HTTP/1.1!Host: example.com!Content-Length: 10!Content-Type: text/plain!!TEST,TEST,$}, 'with body_eol [0]';
         like $log[1], qr{^\[\d+\] \[127.0.0.1 -> example.com:80\] \[Response\] !HTTP/1.0 200 OK!Content-Type: text/plain!!OK,OK,$}, 'with body_eol [1]';
+    }
+
+    {
+        my $req_empty = GET 'http://example.com/';
+
+        my $app_static_empty = sub {
+            [ 200, [ 'Content-Type' => 'text/plain' ], [] ]
+        };
+
+        {
+            local @log;
+            $test->($app_static_empty)->($req_empty);
+            is @log, 2, 'empty [lines]';
+            like $log[0], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Request\] \|GET / HTTP/1.1\|Host: example.com\|Content-Length: 0\|\|$}, 'empty [0]';
+            like $log[1], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Response\] \|HTTP/1.0 200 OK\|Content-Type: text/plain\|\|$}, 'empty [1]';
+        }
     }
 
     my $app_delayed = sub {

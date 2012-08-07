@@ -1,4 +1,9 @@
 ------------------------------------------------------------------------
+0.0201 | Piotr Roszatycki <dexter@cpan.org> | 2012-08-07
+
+* Log responses without body.
+
+------------------------------------------------------------------------
 0.02 | Piotr Roszatycki <dexter@cpan.org> | 2012-08-07
 
 * Delayed and streamed reponses are now supported.
