@@ -1,0 +1,33 @@
+Build.PL
+Changes
+examples/headers_only.psgi
+examples/log4perl.psgi
+examples/traffic.l4p
+lib/Plack/Middleware/TrafficLog.pm
+MANIFEST			This list of files
+MANIFEST.SKIP
+README
+README.md
+t/010_use.t
+t/100_trafficlog.t
+t/test.pl
+xt/check_changes.t
+xt/consistent_version_numbers.t
+xt/copyright.t
+xt/cover.pl
+xt/distribution.t
+xt/kwalitee.t
+xt/minimumversion.t
+xt/perlcritic.t
+xt/perlcriticrc
+xt/pod_coverage.t
+xt/pod_spell.t
+xt/pod_spellrc
+xt/pod_syntax.t
+xt/profile.pl
+xt/signature.t
+Makefile.PL
+LICENSE
+META.yml
+META.json
+SIGNATURE    Added here by Module::Build

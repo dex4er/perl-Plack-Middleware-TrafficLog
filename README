@@ -1,0 +1,41 @@
+NAME
+    Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
+
+SYNOPSIS
+      # In app.psgi
+      use Plack::Builder;
+
+      builder {
+          enable "TrafficLog";
+      };
+
+DESCRIPTION
+    This middleware logs the request and response messages with detailed
+    information.
+
+SEE ALSO
+    Plack, Plack::Middleware::AccessLog.
+
+BUGS
+    This module has unstable API and it can be changed in future.
+
+    The log file can contain the binary data if the PSGI server provides
+    binary files.
+
+    If you find the bug or want to implement new features, please report it
+    at http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog
+
+    The code repository is available at
+    http://github.com/dex4er/perl-Plack-Middleware-TrafficLog
+
+AUTHOR
+    Piotr Roszatycki <dexter@cpan.org>
+
+LICENSE
+    Copyright (c) 2012 Piotr Roszatycki <dexter@cpan.org>.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as perl itself.
+
+    See http://dev.perl.org/licenses/artistic.html
+
