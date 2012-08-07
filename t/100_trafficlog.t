@@ -111,18 +111,18 @@ my $test = sub {
         }
     }
 
-    my $app_delayed = sub {
-        my ($app) = @_;
-        return sub {
-            my ($env) = @_;
+    {
+        my $app_delayed = sub {
+            my ($app) = @_;
             return sub {
-                my ($responder) = @_;
-                $responder->( $app->() );
+                my ($env) = @_;
+                return sub {
+                    my ($responder) = @_;
+                    $responder->( $app->() );
+                };
             };
         };
-    };
 
-    {
         local @log;
         $test->($app_delayed->($app_static))->($req);
         is @log, 2, 'delayed [lines]';
@@ -130,20 +130,20 @@ my $test = sub {
         like $log[1], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1 -> example.com:80\] \[Response\] \|HTTP/1.0 200 OK\|Content-Type: text/plain\|\|OK OK $}, 'delayed [1]';
     }
 
-    my $app_streaming = sub {
-        return sub {
-            my ($responder) = @_;
-            my $writer = $responder->(
-                [ 200, [ 'Content-Type' => 'text/plain' ] ]
-            );
-            $writer->write("OK\n");
-            $writer->write("OK\n");
-            $writer->close;
-            return;
-        };
-    };
-
     {
+        my $app_streaming = sub {
+            return sub {
+                my ($responder) = @_;
+                my $writer = $responder->(
+                    [ 200, [ 'Content-Type' => 'text/plain' ] ]
+                );
+                $writer->write("OK\n");
+                $writer->write("OK\n");
+                $writer->close;
+                return;
+            };
+        };
+
         local @log;
         $test->($app_streaming)->($req);
         is @log, 3, 'streaming [lines]';
