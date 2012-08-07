@@ -18,6 +18,10 @@ Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
 This middleware logs the request and response messages with detailed
 information.
 
+This module works also with applications which have delayed response. In that
+case each chunk is logged separately and shares the same ID number and
+headers.
+
 =for readme stop
 
 =cut
@@ -27,11 +31,13 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 use parent qw(Plack::Middleware);
 use Plack::Util::Accessor qw( with_request with_response with_date with_body eol body_eol logger );
+
+use Plack::Util;
 
 use Plack::Request;
 use Plack::Response;
@@ -112,7 +118,7 @@ sub _log_request {
 
 
 sub _log_response {
-    my ($self, $env, $ret, $logger) = @_;
+    my ($self, $env, $ret) = @_;
 
     my $res = Plack::Response->new(@$ret);
 
@@ -133,12 +139,18 @@ sub call {
     $self->_log_request($env) if $self->with_request;
 
     # $self->app is the original app
-    my $ret = $self->app->($env);
+    my $res = $self->app->($env);
 
     # Postprocessing
-    $self->_log_response($env, $ret) if $self->with_response;
-
-    return $ret;
+    return $self->with_response ? $self->response_cb($res, sub {
+        my ($ret) = @_;
+        return sub {
+            my ($chunk) = @_;
+            return unless defined $chunk;
+            $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ] );
+            return $chunk;
+        };
+    }) : $res;
 };
 
 

@@ -20,7 +20,6 @@ my $build = Module::Build->new(
     },
     build_requires          => {
         'Test::More'                => 0,
-        'Test::Exception'           => 0,
     },
     auto_configure_requires => 0,
     create_makefile_pl      => 'traditional',

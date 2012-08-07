@@ -10,7 +10,6 @@ WriteMakefile
   'VERSION_FROM' => 'lib/Plack/Middleware/TrafficLog.pm',
   'PREREQ_PM' => {
                    'Test::More' => 0,
-                   'Test::Exception' => 0,
                    'Plack' => 0
                  }
 )

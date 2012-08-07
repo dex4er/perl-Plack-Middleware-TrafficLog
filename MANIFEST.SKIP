@@ -26,6 +26,9 @@
 \bcover_db
 \btmon.out$
 
+# Avoid Devel::NYTProf generated files
+\bnytprof
+
 # Avoid temp and backup files.
 ~$
 \.tmp$

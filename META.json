@@ -16,7 +16,6 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Test::Exception" : "0",
             "Test::More" : "0"
          }
       },
@@ -30,7 +29,7 @@
    "provides" : {
       "Plack::Middleware::TrafficLog" : {
          "file" : "lib/Plack/Middleware/TrafficLog.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       }
    },
    "release_status" : "stable",
@@ -45,5 +44,5 @@
          "url" : "http://github.com/dex4er/perl-Plack-Middleware-TrafficLog"
       }
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }
