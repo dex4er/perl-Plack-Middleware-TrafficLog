@@ -1,5 +1,5 @@
 NAME
-    Plack::Middleware::TrafficLog - Log request and response messages
+    Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
 
 SYNOPSIS
       # In app.psgi
@@ -17,6 +17,11 @@ SEE ALSO
     Plack, Plack::Middleware::AccessLog.
 
 BUGS
+    This module has unstable API and it can be changed in future.
+
+    The log file can contain the binary data if the PSGI server provides
+    binary files.
+
     If you find the bug or want to implement new features, please report it
     at http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog
 

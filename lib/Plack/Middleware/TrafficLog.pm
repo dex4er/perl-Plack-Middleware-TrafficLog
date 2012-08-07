@@ -2,7 +2,7 @@ package Plack::Middleware::TrafficLog;
 
 =head1 NAME
 
-Plack::Middleware::TrafficLog - Log headers and body of request and response
+Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
 
 =head1 SYNOPSIS
 

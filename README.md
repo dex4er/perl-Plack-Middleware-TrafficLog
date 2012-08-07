@@ -1,6 +1,6 @@
 # NAME
 
-Plack::Middleware::TrafficLog - Log request and response messages
+Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
 
 # SYNOPSIS
 
@@ -27,7 +27,7 @@ information.
     log4perl.appender.LogfileTraffic.layout = PatternLayout
     log4perl.appender.LogfileTraffic.layout.ConversionPattern = %m{chomp}%n
 
-    # log4perl.psgi
+    # app.psgi
     use Log::Log4perl qw(:levels get_logger);
     Log::Log4perl->init('traffic.l4p');
     my $logger = get_logger('traffic');
@@ -35,8 +35,8 @@ information.
     enable "Plack::Middleware::TrafficLog",
         logger => sub { $logger->log($INFO, join '', @_) };
 
-Sets a callback to print log message to. It prints to `psgi.errors`
-output stream by default.
+Sets a callback to print log message to. It prints to `psgi.errors` output
+stream by default.
 
 - with\_request
 
@@ -56,20 +56,24 @@ The false value disables logging of message's body.
 
 - eol
 
-Sets the line separator for message's headers and body. The default
-value is the pipe character `|`.
+Sets the line separator for message's headers and body. The default value is
+the pipe character `|`.
 
 - body\_eol
 
-Sets the line separator for message's body only. The default is the
-space character ` `. The default value is used only if __eol__ is also
-undefined.
+Sets the line separator for message's body only. The default is the space
+character ` `. The default value is used only if __eol__ is also undefined.
 
 # SEE ALSO
 
 [Plack](http://search.cpan.org/perldoc?Plack), [Plack::Middleware::AccessLog](http://search.cpan.org/perldoc?Plack::Middleware::AccessLog).
 
 # BUGS
+
+This module has unstable API and it can be changed in future.
+
+The log file can contain the binary data if the PSGI server provides binary
+files.
 
 If you find the bug or want to implement new features, please report it at
 [http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog](http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog)
