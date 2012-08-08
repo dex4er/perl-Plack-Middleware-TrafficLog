@@ -16,10 +16,18 @@ Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
 =head1 DESCRIPTION
 
 This middleware logs the request and response messages with detailed
-information.
+information about headers and body.
+
+The example log:
+
+  [08/Aug/2012:16:59:47 +0200] [164836368] [127.0.0.1 -> 0:5000] [Request ]
+  |GET / HTTP/1.1|Connection: TE, close|Host: localhost:5000|TE: deflate,gzi
+  p;q=0.3|User-Agent: lwp-request/6.03 libwww-perl/6.03||
+  [08/Aug/2012:16:59:47 +0200] [164836368] [127.0.0.1 <- 0:5000] [Response]
+  |HTTP/1.0 200 OK|Content-Type: text/plain||Hello World
 
 This module works also with applications which have delayed response. In that
-case each chunk is logged separately and shares the same ID number and
+case each chunk is logged separately and shares the same unique ID number and
 headers.
 
 =for readme stop
@@ -27,7 +35,8 @@ headers.
 =cut
 
 
-use 5.006;
+use 5.008;
+
 use strict;
 use warnings;
 
@@ -85,12 +94,14 @@ sub _log_message {
         : '';
 
     $logger->( sprintf
-        "%s[%s] [%s -> %s] [%s] %s%s%s%s%s%s\n",
+        "%s[%s] [%s %s %s] [%s] %s%s%s%s%s%s\n",
 
         $date,
         Scalar::Util::refaddr $env->{'psgi.input'} || '?',
 
-        $env->{REMOTE_ADDR}, $server_addr,
+        $env->{REMOTE_ADDR},
+        $type eq 'Request ' ? '->' : $type eq 'Response' ? '<-' : '--',
+        $server_addr,
 
         $type,
 
@@ -113,7 +124,7 @@ sub _log_request {
     my $headers = $req->headers;
     my $body = $self->with_body ? $req->content : '';
 
-    $self->_log_message('Request', $env, $status, $headers, $body);
+    $self->_log_message('Request ', $env, $status, $headers, $body);
 };
 
 
