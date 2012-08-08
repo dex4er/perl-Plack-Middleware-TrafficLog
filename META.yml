@@ -14,7 +14,7 @@ name: Plack-Middleware-TrafficLog
 provides:
   Plack::Middleware::TrafficLog:
     file: lib/Plack/Middleware/TrafficLog.pm
-    version: 0.02
+    version: 0.0201
 requires:
   Plack: 0
   perl: 5.008
@@ -22,4 +22,4 @@ resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog
   license: http://dev.perl.org/licenses/
   repository: http://github.com/dex4er/perl-Plack-Middleware-TrafficLog
-version: 0.02
+version: 0.0201

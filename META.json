@@ -29,7 +29,7 @@
    "provides" : {
       "Plack::Middleware::TrafficLog" : {
          "file" : "lib/Plack/Middleware/TrafficLog.pm",
-         "version" : "0.02"
+         "version" : "0.0201"
       }
    },
    "release_status" : "stable",
@@ -44,5 +44,5 @@
          "url" : "http://github.com/dex4er/perl-Plack-Middleware-TrafficLog"
       }
    },
-   "version" : "0.02"
+   "version" : "0.0201"
 }
