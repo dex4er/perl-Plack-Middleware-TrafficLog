@@ -35,7 +35,7 @@ BUGS
     binary files.
 
     If you find the bug or want to implement new features, please report it
-    at http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog
+    at http://github.com/dex4er/perl-Plack-Middleware-TrafficLog/issues
 
     The code repository is available at
     http://github.com/dex4er/perl-Plack-Middleware-TrafficLog
