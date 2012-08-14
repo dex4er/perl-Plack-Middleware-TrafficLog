@@ -1,17 +1,20 @@
 ------------------------------------------------------------------------
-0.0201 | Piotr Roszatycki <dexter@cpan.org> | 2012-08-08
+0.0202  2012-08-14      Piotr Roszatycki <dexter@cpan.org>
+
+------------------------------------------------------------------------
+0.0201  2012-08-08      Piotr Roszatycki <dexter@cpan.org>
 
 * Log responses without body.
 * Log correctly responses with unknown status.
 
 ------------------------------------------------------------------------
-0.02 | Piotr Roszatycki <dexter@cpan.org> | 2012-08-07
+0.02    2012-08-07      Piotr Roszatycki <dexter@cpan.org>
 
 * Delayed and streamed reponses are now supported.
 * Build does not require Test::Exception.
 
 ------------------------------------------------------------------------
-0.01 | Piotr Roszatycki <dexter@cpan.org> | 2012-08-07
+0.01    2012-08-07      Piotr Roszatycki <dexter@cpan.org>
 
 * First CPAN release.
 
