@@ -239,7 +239,7 @@ The log file can contain the binary data if the PSGI server provides binary
 files.
 
 If you find the bug or want to implement new features, please report it at
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog>
+L<http://github.com/dex4er/perl-Plack-Middleware-TrafficLog/issues>
 
 The code repository is available at
 L<http://github.com/dex4er/perl-Plack-Middleware-TrafficLog>
