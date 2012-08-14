@@ -68,16 +68,6 @@ sub prepare_app {
 };
 
 
-sub _strftime {
-    my ($self, @args) = @_;
-    my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
-    POSIX::setlocale(&POSIX::LC_ALL, 'C');
-    my $out = POSIX::strftime(@args);
-    POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
-    return $out;
-};
-
-
 sub _log_message {
     my ($self, $type, $env, $status, $headers, $body) = @_;
 
@@ -89,8 +79,17 @@ sub _log_message {
     my $body_eol = $self->body_eol;
     $body =~ s/\n/$body_eol/gs;
 
+    my $strftime = sub {
+        my (@args) = @_;
+        my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
+        POSIX::setlocale(&POSIX::LC_ALL, 'C');
+        my $out = POSIX::strftime(@args);
+        POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
+        return $out;
+    };
+
     my $date = $self->with_date
-        ? ('['. $self->_strftime('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
+        ? ('['. $strftime->('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
         : '';
 
     $logger->( sprintf
