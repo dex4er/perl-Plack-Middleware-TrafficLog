@@ -1,7 +1,8 @@
 ------------------------------------------------------------------------
-0.0202  2012-08-15      Piotr Roszatycki <dexter@cpan.org>
+0.0202  2012-08-17      Piotr Roszatycki <dexter@cpan.org>
 
 * Correct timezone on systems where strftime doesn't support %z.
+* Log also REMOTE_PORT if is defined.
 
 ------------------------------------------------------------------------
 0.0201  2012-08-08      Piotr Roszatycki <dexter@cpan.org>

@@ -82,6 +82,9 @@ sub _log_message {
     my $logger = $self->logger || sub { $env->{'psgi.errors'}->print(@_) };
 
     my $server_addr = sprintf '%s:%s', $env->{SERVER_NAME}, $env->{SERVER_PORT};
+    my $remote_addr = defined $env->{REMOTE_PORT}
+        ? sprintf '%s:%s', $env->{REMOTE_ADDR}, $env->{REMOTE_PORT}
+        : $env->{REMOTE_ADDR};
 
     my $eol = $self->eol;
     my $body_eol = $self->body_eol;
@@ -107,7 +110,7 @@ sub _log_message {
         $date,
         Scalar::Util::refaddr $env->{'psgi.input'} || '?',
 
-        $env->{REMOTE_ADDR},
+        $remote_addr,
         $type eq 'Request ' ? '->' : $type eq 'Response' ? '<-' : '--',
         $server_addr,
 
