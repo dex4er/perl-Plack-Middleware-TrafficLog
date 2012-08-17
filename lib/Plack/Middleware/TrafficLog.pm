@@ -40,7 +40,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.0201';
+our $VERSION = '0.0202';
 
 
 use parent qw(Plack::Middleware);
@@ -52,7 +52,15 @@ use Plack::Request;
 use Plack::Response;
 
 use POSIX ();
+use Time::Local ();
 use Scalar::Util ();
+
+
+my $tzoffset = POSIX::strftime("%z", localtime) !~ /^[+-]\d{4}$/ && do {
+    my @t = localtime(time);
+    my $s = Time::Local::timegm(@t) - Time::Local::timelocal(@t);
+    sprintf '%+03d%02u', int($s/60/60), $s % (60*60)
+};
 
 
 sub prepare_app {
@@ -68,29 +76,32 @@ sub prepare_app {
 };
 
 
-sub _strftime {
-    my ($self, @args) = @_;
-    my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
-    POSIX::setlocale(&POSIX::LC_ALL, 'C');
-    my $out = POSIX::strftime(@args);
-    POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
-    return $out;
-};
-
-
 sub _log_message {
     my ($self, $type, $env, $status, $headers, $body) = @_;
 
     my $logger = $self->logger || sub { $env->{'psgi.errors'}->print(@_) };
 
     my $server_addr = sprintf '%s:%s', $env->{SERVER_NAME}, $env->{SERVER_PORT};
+    my $remote_addr = defined $env->{REMOTE_PORT}
+        ? sprintf '%s:%s', $env->{REMOTE_ADDR}, $env->{REMOTE_PORT}
+        : $env->{REMOTE_ADDR};
 
     my $eol = $self->eol;
     my $body_eol = $self->body_eol;
     $body =~ s/\n/$body_eol/gs;
 
+    my $strftime = sub {
+        my ($fmt, @time) = @_;
+        $fmt =~ s/%z/$tzoffset/g if $tzoffset;
+        my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
+        POSIX::setlocale(&POSIX::LC_ALL, 'C');
+        my $out = POSIX::strftime($fmt, @time);
+        POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
+        return $out;
+    };
+
     my $date = $self->with_date
-        ? ('['. $self->_strftime('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
+        ? ('['. $strftime->('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
         : '';
 
     $logger->( sprintf
@@ -99,7 +110,7 @@ sub _log_message {
         $date,
         Scalar::Util::refaddr $env->{'psgi.input'} || '?',
 
-        $env->{REMOTE_ADDR},
+        $remote_addr,
         $type eq 'Request ' ? '->' : $type eq 'Response' ? '<-' : '--',
         $server_addr,
 
@@ -239,7 +250,7 @@ The log file can contain the binary data if the PSGI server provides binary
 files.
 
 If you find the bug or want to implement new features, please report it at
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog>
+L<http://github.com/dex4er/perl-Plack-Middleware-TrafficLog/issues>
 
 The code repository is available at
 L<http://github.com/dex4er/perl-Plack-Middleware-TrafficLog>

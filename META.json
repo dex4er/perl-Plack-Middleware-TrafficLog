@@ -29,13 +29,13 @@
    "provides" : {
       "Plack::Middleware::TrafficLog" : {
          "file" : "lib/Plack/Middleware/TrafficLog.pm",
-         "version" : "0.0201"
+         "version" : "0.0202"
       }
    },
    "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
-         "web" : "http://rt.cpan.org/NoAuth/Bugs.html?Dist=Plack-Middleware-TrafficLog"
+         "web" : "http://github.com/dex4er/perl-Plack-Middleware-TrafficLog/issues"
       },
       "license" : [
          "http://dev.perl.org/licenses/"
@@ -44,5 +44,5 @@
          "url" : "http://github.com/dex4er/perl-Plack-Middleware-TrafficLog"
       }
    },
-   "version" : "0.0201"
+   "version" : "0.0202"
 }
