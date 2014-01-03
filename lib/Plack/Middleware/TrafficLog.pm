@@ -52,15 +52,8 @@ use Plack::Request;
 use Plack::Response;
 
 use POSIX ();
-use Time::Local ();
+use POSIX::strftime::GNU ();
 use Scalar::Util ();
-
-
-my $tzoffset = POSIX::strftime("%z", localtime) !~ /^[+-]\d{4}$/ && do {
-    my @t = localtime(time);
-    my $s = Time::Local::timegm(@t) - Time::Local::timelocal(@t);
-    sprintf '%+03d%02u', int($s/60/60), $s % (60*60)
-};
 
 
 sub prepare_app {
@@ -92,10 +85,9 @@ sub _log_message {
 
     my $strftime = sub {
         my ($fmt, @time) = @_;
-        $fmt =~ s/%z/$tzoffset/g if $tzoffset;
         my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
         POSIX::setlocale(&POSIX::LC_ALL, 'C');
-        my $out = POSIX::strftime($fmt, @time);
+        my $out = POSIX::strftime::GNU::strftime($fmt, @time);
         POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
         return $out;
     };
