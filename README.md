@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dex4er/perl-Plack-Middleware-TrafficLog.png?branch=master)](https://travis-ci.org/dex4er/perl-Plack-Middleware-TrafficLog)
+
 # NAME
 
 Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
@@ -32,53 +34,53 @@ headers.
 
 - logger
 
-    # traffic.l4p
-    log4perl.logger.traffic = DEBUG, LogfileTraffic
-    log4perl.appender.LogfileTraffic = Log::Log4perl::Appender::File
-    log4perl.appender.LogfileTraffic.filename = traffic.log
-    log4perl.appender.LogfileTraffic.layout = PatternLayout
-    log4perl.appender.LogfileTraffic.layout.ConversionPattern = %m{chomp}%n
+        # traffic.l4p
+        log4perl.logger.traffic = DEBUG, LogfileTraffic
+        log4perl.appender.LogfileTraffic = Log::Log4perl::Appender::File
+        log4perl.appender.LogfileTraffic.filename = traffic.log
+        log4perl.appender.LogfileTraffic.layout = PatternLayout
+        log4perl.appender.LogfileTraffic.layout.ConversionPattern = %m{chomp}%n
 
-    # app.psgi
-    use Log::Log4perl qw(:levels get_logger);
-    Log::Log4perl->init('traffic.l4p');
-    my $logger = get_logger('traffic');
+        # app.psgi
+        use Log::Log4perl qw(:levels get_logger);
+        Log::Log4perl->init('traffic.l4p');
+        my $logger = get_logger('traffic');
 
-    enable "Plack::Middleware::TrafficLog",
-        logger => sub { $logger->log($INFO, join '', @_) };
+        enable "Plack::Middleware::TrafficLog",
+            logger => sub { $logger->log($INFO, join '', @_) };
 
-Sets a callback to print log message to. It prints to `psgi.errors` output
-stream by default.
+    Sets a callback to print log message to. It prints to `psgi.errors` output
+    stream by default.
 
 - with\_request
 
-The false value disables logging of request message.
+    The false value disables logging of request message.
 
 - with\_response
 
-The false value disables logging of response message.
+    The false value disables logging of response message.
 
 - with\_date
 
-The false value disables logging of current date.
+    The false value disables logging of current date.
 
 - with\_body
 
-The false value disables logging of message's body.
+    The false value disables logging of message's body.
 
 - eol
 
-Sets the line separator for message's headers and body. The default value is
-the pipe character `|`.
+    Sets the line separator for message's headers and body. The default value is
+    the pipe character `|`.
 
 - body\_eol
 
-Sets the line separator for message's body only. The default is the space
-character ` `. The default value is used only if __eol__ is also undefined.
+    Sets the line separator for message's body only. The default is the space
+    character ` `. The default value is used only if __eol__ is also undefined.
 
 # SEE ALSO
 
-[Plack](http://search.cpan.org/perldoc?Plack), [Plack::Middleware::AccessLog](http://search.cpan.org/perldoc?Plack::Middleware::AccessLog).
+[Plack](https://metacpan.org/pod/Plack), [Plack::Middleware::AccessLog](https://metacpan.org/pod/Plack::Middleware::AccessLog).
 
 # BUGS
 
@@ -99,7 +101,7 @@ Piotr Roszatycki <dexter@cpan.org>
 
 # LICENSE
 
-Copyright (c) 2012 Piotr Roszatycki <dexter@cpan.org>.
+Copyright (c) 2012, 2014 Piotr Roszatycki <dexter@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.

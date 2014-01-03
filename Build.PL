@@ -27,12 +27,13 @@ my $build = Module::Build->new(
     create_license          => 1,
     recursive_test_files    => 0,
     add_to_cleanup          => [
-        '*.bak', '*.gz', '*.tgz', '*.ppd', '*.ppmx', '*.deb', '*.bat',
-        'Makefile', 'pm_to_blib', 'cover_db', 'Debian_CPANTS.txt',
+        '*.bak', '*.gz', '*.tgz', '*.ppd', '*.ppmx', '*.deb',
+        'pm_to_blib', 'cover_db', 'Debian_CPANTS.txt',
+        'compilet*', 'test-*',
         "$dist-*",
     ],
     meta_merge              => {
-        resources                   => {
+        resources               => {
             bugtracker => "http://github.com/dex4er/perl-$dist/issues",
             repository => "http://github.com/dex4er/perl-$dist",
         },

@@ -70,12 +70,12 @@ sub check_file {
                                        (?: \d{4} \\? [-,]\s*)*
                                        (\d{4})
                                        >gixms;
-    if (0 < grep {$_ ne $this_year} @copyright_years) {
-        fail("$_ copyrights: @copyright_years");
+    if (0 < grep {$_ eq $this_year} @copyright_years) {
+        pass($_);
     } elsif (0 == @copyright_years) {
         pass("$_, no copyright found");
     } else {
-        pass($_);
+        fail("$_ copyrights: @copyright_years");
     } # end if
 
     return $copyrights_found += @copyright_years;
