@@ -43,8 +43,13 @@ use warnings;
 our $VERSION = '0.0300';
 
 
-use parent qw(Plack::Middleware);
-use Plack::Util::Accessor qw( with_request with_response with_date with_body eol body_eol logger );
+use parent 'Plack::Middleware';
+
+use Plack::Util::Accessor qw(
+    with_request with_response with_date with_body eol body_eol logger
+    _counter _call_id
+);
+
 
 use Plack::Util;
 
@@ -66,6 +71,8 @@ sub prepare_app {
     $self->with_body(1)     unless defined $self->with_body;
     $self->body_eol(defined $self->eol ? $self->eol : ' ') unless defined $self->body_eol;
     $self->eol('|')         unless defined $self->eol;
+
+    $self->_counter(0);
 };
 
 
@@ -100,7 +107,7 @@ sub _log_message {
         "%s[%s] [%s %s %s] [%s] %s%s%s%s%s%s\n",
 
         $date,
-        Scalar::Util::refaddr $env->{'psgi.input'} || '?',
+        $self->_call_id,
 
         $remote_addr,
         $type eq 'Request ' ? '->' : $type eq 'Response' ? '<-' : '--',
@@ -151,6 +158,12 @@ sub _log_response {
 
 sub call {
     my ($self, $env) = @_;
+
+    $self->_call_id(sprintf '%015d',
+        time % 2**16 * 2**32 +
+        (Scalar::Util::looks_like_number $env->{REMOTE_PORT} ? $env->{REMOTE_PORT} : int rand 2**16) % 2**16 * 2**16 +
+        $self->_counter % 2**16);
+    $self->_counter($self->_counter + 1);
 
     # Preprocessing
     $self->_log_request($env) if $self->with_request;
