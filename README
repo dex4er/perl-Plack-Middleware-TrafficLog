@@ -25,6 +25,8 @@ DESCRIPTION
     that case each chunk is logged separately and shares the same unique ID
     number and headers.
 
+    The body of request and response is not logged by default.
+
 SEE ALSO
     Plack, Plack::Middleware::AccessLog.
 

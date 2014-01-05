@@ -30,6 +30,8 @@ This module works also with applications which have delayed response. In that
 case each chunk is logged separately and shares the same unique ID number and
 headers.
 
+The body of request and response is not logged by default.
+
 # CONFIGURATION
 
 - logger
@@ -66,7 +68,7 @@ headers.
 
 - with\_body
 
-    The false value disables logging of message's body.
+    The true value enables logging of message's body.
 
 - eol
 
