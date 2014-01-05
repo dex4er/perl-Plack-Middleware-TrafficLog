@@ -152,9 +152,12 @@ sub _log_response {
 
     my $status = sprintf 'HTTP/1.0 %s %s', $status_code, defined $status_message ? $status_message : '';
     my $headers = $res->headers;
-    my $body = $self->with_body ? $res->body : '';
-    $body = '' unless defined $body;
-    $body = join '', grep { defined $_ } @$body if ref $body eq 'ARRAY';
+    my $body = '';
+    if ($self->with_body) {
+        $body = $res->content;
+        $body = '' unless defined $body;
+        $body = join '', grep { defined $_ } @$body if ref $body eq 'ARRAY';
+    }
 
     $self->_log_message('Response', $env, $status, $headers, $body);
 };
