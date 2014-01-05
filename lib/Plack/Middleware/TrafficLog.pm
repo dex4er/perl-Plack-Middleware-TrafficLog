@@ -80,6 +80,15 @@ sub prepare_app {
 };
 
 
+sub _strftime {
+    my ($self, $fmt, @time) = @_;
+    my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
+    POSIX::setlocale(&POSIX::LC_ALL, 'C');
+    my $out = POSIX::strftime::GNU::strftime($fmt, @time);
+    POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
+    return $out;
+};
+
 sub _log_message {
     my ($self, $type, $env, $status, $headers, $body) = @_;
 
@@ -94,22 +103,11 @@ sub _log_message {
     my $body_eol = $self->body_eol;
     $body =~ s/\n/$body_eol/gs;
 
-    my $strftime = sub {
-        my ($fmt, @time) = @_;
-        my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
-        POSIX::setlocale(&POSIX::LC_ALL, 'C');
-        my $out = POSIX::strftime::GNU::strftime($fmt, @time);
-        POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
-        return $out;
-    };
-
     my $date = $self->with_date
-        ? ('['. $strftime->('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
+        ? ('['. $self->_strftime('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
         : '';
 
-    $logger->( sprintf
-        "%s[%s] [%s %s %s] [%s] %s%s%s%s%s%s\n",
-
+    $logger->( sprintf "%s[%s] [%s %s %s] [%s] %s%s%s%s%s%s\n",
         $date,
         $self->_call_id,
 
