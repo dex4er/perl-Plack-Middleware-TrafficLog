@@ -30,6 +30,8 @@ This module works also with applications which have delayed response. In that
 case each chunk is logged separately and shares the same unique ID number and
 headers.
 
+The body of request and response is not logged by default.
+
 =for readme stop
 
 =cut
@@ -65,10 +67,10 @@ sub prepare_app {
     my ($self) = @_;
 
     # the default values
-    $self->with_request(1)  unless defined $self->with_request;
-    $self->with_response(1) unless defined $self->with_response;
-    $self->with_date(1)     unless defined $self->with_date;
-    $self->with_body(1)     unless defined $self->with_body;
+    $self->with_request(Plack::Util::TRUE)  unless defined $self->with_request;
+    $self->with_response(Plack::Util::TRUE) unless defined $self->with_response;
+    $self->with_date(Plack::Util::TRUE)     unless defined $self->with_date;
+    $self->with_body(Plack::Util::FALSE)    unless defined $self->with_body;
     $self->body_eol(defined $self->eol ? $self->eol : ' ') unless defined $self->body_eol;
     $self->eol('|')         unless defined $self->eol;
 
@@ -179,7 +181,7 @@ sub call {
             my ($chunk) = @_;
             return if not defined $chunk and $seen;
             $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ] );
-            $seen = 1;
+            $seen = Plack::Util::TRUE;
             return $chunk;
         };
     }) : $res;
@@ -227,7 +229,7 @@ The false value disables logging of current date.
 
 =item with_body
 
-The false value disables logging of message's body.
+The true value enables logging of message's body.
 
 =item eol
 
