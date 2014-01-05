@@ -6,7 +6,7 @@ SYNOPSIS
       use Plack::Builder;
 
       builder {
-          enable "TrafficLog";
+          enable "TrafficLog", with_body => 1;
       };
 
 DESCRIPTION
@@ -25,7 +25,8 @@ DESCRIPTION
     that case each chunk is logged separately and shares the same unique ID
     number and headers.
 
-    The body of request and response is not logged by default.
+    The body of request and response is not logged by default. For streaming
+    responses only first chunk is logged by default.
 
 SEE ALSO
     Plack, Plack::Middleware::AccessLog.

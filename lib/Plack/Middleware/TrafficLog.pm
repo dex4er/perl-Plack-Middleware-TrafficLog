@@ -31,7 +31,7 @@ case each chunk is logged separately and shares the same unique ID number and
 headers.
 
 The body of request and response is not logged by default. For streaming
-reponses only first chunk is logged by default.
+responses only first chunk is logged by default.
 
 =for readme stop
 

@@ -10,7 +10,7 @@ Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
     use Plack::Builder;
 
     builder {
-        enable "TrafficLog";
+        enable "TrafficLog", with_body => 1;
     };
 
 # DESCRIPTION
@@ -30,7 +30,8 @@ This module works also with applications which have delayed response. In that
 case each chunk is logged separately and shares the same unique ID number and
 headers.
 
-The body of request and response is not logged by default.
+The body of request and response is not logged by default. For streaming
+responses only first chunk is logged by default.
 
 # CONFIGURATION
 
@@ -69,6 +70,10 @@ The body of request and response is not logged by default.
 - with\_body
 
     The true value enables logging of message's body.
+
+- with\_all\_chunks
+
+    The true value enables logging of every chunk for streaming responses.
 
 - eol
 
