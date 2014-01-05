@@ -181,7 +181,8 @@ sub call {
         my $seen;
         return sub {
             my ($chunk) = @_;
-            return if $seen and (not defined $chunk or not $self->with_all_chunks);
+            return if $seen and not defined $chunk;
+            return $chunk if $seen and not $self->with_all_chunks;
             $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ]);
             $seen = Plack::Util::TRUE;
             return $chunk;
