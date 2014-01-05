@@ -10,7 +10,7 @@ Plack::Middleware::TrafficLog - Log headers and body of HTTP traffic
   use Plack::Builder;
 
   builder {
-      enable "TrafficLog";
+      enable "TrafficLog", with_body => 1;
   };
 
 =head1 DESCRIPTION
@@ -30,7 +30,8 @@ This module works also with applications which have delayed response. In that
 case each chunk is logged separately and shares the same unique ID number and
 headers.
 
-The body of request and response is not logged by default.
+The body of request and response is not logged by default. For streaming
+reponses only first chunk is logged by default.
 
 =for readme stop
 
@@ -48,7 +49,7 @@ our $VERSION = '0.0300';
 use parent 'Plack::Middleware';
 
 use Plack::Util::Accessor qw(
-    with_request with_response with_date with_body eol body_eol logger
+    with_request with_response with_date with_body with_all_chunks eol body_eol logger
     _counter _call_id
 );
 
@@ -67,10 +68,11 @@ sub prepare_app {
     my ($self) = @_;
 
     # the default values
-    $self->with_request(Plack::Util::TRUE)  unless defined $self->with_request;
-    $self->with_response(Plack::Util::TRUE) unless defined $self->with_response;
-    $self->with_date(Plack::Util::TRUE)     unless defined $self->with_date;
-    $self->with_body(Plack::Util::FALSE)    unless defined $self->with_body;
+    $self->with_request(Plack::Util::TRUE)     unless defined $self->with_request;
+    $self->with_response(Plack::Util::TRUE)    unless defined $self->with_response;
+    $self->with_date(Plack::Util::TRUE)        unless defined $self->with_date;
+    $self->with_body(Plack::Util::FALSE)       unless defined $self->with_body;
+    $self->with_all_chunks(Plack::Util::FALSE) unless defined $self->with_all_chunks;
     $self->body_eol(defined $self->eol ? $self->eol : ' ') unless defined $self->body_eol;
     $self->eol('|')         unless defined $self->eol;
 
@@ -179,8 +181,8 @@ sub call {
         my $seen;
         return sub {
             my ($chunk) = @_;
-            return if not defined $chunk and $seen;
-            $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ] );
+            return if $seen and (not defined $chunk or not $self->with_all_chunks);
+            $self->_log_response($env, [ $ret->[0], $ret->[1], [$chunk] ]);
             $seen = Plack::Util::TRUE;
             return $chunk;
         };
@@ -230,6 +232,10 @@ The false value disables logging of current date.
 =item with_body
 
 The true value enables logging of message's body.
+
+=item with_all_chunks
+
+The true value enables logging of every chunk for streaming responses.
 
 =item eol
 

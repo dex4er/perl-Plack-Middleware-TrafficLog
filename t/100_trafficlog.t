@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 35;
+use Test::More tests => 38;
 
 use HTTP::Request::Common;
 use Plack::Test;
@@ -146,6 +146,27 @@ my $test = sub {
 
         local @log;
         $test->($app_streaming, with_body => 1)->($req);
+        is @log, 2, 'streaming [lines]';
+        like $log[0], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1:\d+ -> example.com:80\] \[Request \] \|POST / HTTP/1.1\|Host: example.com\|Content-Length: 10\|Content-Type: text/plain\|\|TEST TEST $}, 'streaming [0]';
+        like $log[1], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1:\d+ <- example.com:80\] \[Response\] \|HTTP/1.0 200 OK\|Content-Type: text/plain\|\|OK $}, 'streaming [1]';
+    }
+
+    {
+        my $app_streaming = sub {
+            return sub {
+                my ($responder) = @_;
+                my $writer = $responder->(
+                    [ 200, [ 'Content-Type' => 'text/plain' ] ]
+                );
+                $writer->write("OK\n");
+                $writer->write("OK\n");
+                $writer->close;
+                return;
+            };
+        };
+
+        local @log;
+        $test->($app_streaming, with_body => 1, with_all_chunks => 1)->($req);
         is @log, 3, 'streaming [lines]';
         like $log[0], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1:\d+ -> example.com:80\] \[Request \] \|POST / HTTP/1.1\|Host: example.com\|Content-Length: 10\|Content-Type: text/plain\|\|TEST TEST $}, 'streaming [0]';
         like $log[1], qr{^\[\d{2}/\S+/\d{4}:\d{2}:\d{2}:\d{2} \S+\] \[\d+\] \[127.0.0.1:\d+ <- example.com:80\] \[Response\] \|HTTP/1.0 200 OK\|Content-Type: text/plain\|\|OK $}, 'streaming [1]';

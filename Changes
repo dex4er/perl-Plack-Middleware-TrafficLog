@@ -1,6 +1,8 @@
 0.0300  2014-01-04      Piotr Roszatycki <dexter@cpan.org>
 
 * The body of request and response is not logged by default.
+* New option: with_all_chunks. For streaming reponses only first chunk is
+  logged by default.
 * Requires POSIX::strftime::GNU
 
 0.0202  2012-08-17      Piotr Roszatycki <dexter@cpan.org>
