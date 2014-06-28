@@ -83,7 +83,7 @@ responses only first chunk is logged by default.
 - body\_eol
 
     Sets the line separator for message's body only. The default is the space
-    character ` `. The default value is used only if __eol__ is also undefined.
+    character ` `. The default value is used only if **eol** is also undefined.
 
 # SEE ALSO
 
