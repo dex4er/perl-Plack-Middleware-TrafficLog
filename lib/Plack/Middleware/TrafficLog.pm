@@ -101,7 +101,7 @@ sub _log_message {
 
     my $eol = $self->eol;
     my $body_eol = $self->body_eol;
-    $body =~ s/\n/$body_eol/gs;
+    $body =~ s/\015?\012/$body_eol/gs if defined $body_eol;
 
     my $date = $self->with_date
         ? ('['. $self->_strftime('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
