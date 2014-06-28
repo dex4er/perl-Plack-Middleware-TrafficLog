@@ -1,4 +1,4 @@
-0.0300  2014-01-04      Piotr Roszatycki <dexter@cpan.org>
+0.0300  2014-06-28      Piotr Roszatycki <dexter@cpan.org>
 
 * The body of request and response is not logged by default.
 * New option: with_all_chunks. For streaming reponses only first chunk is
