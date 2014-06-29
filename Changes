@@ -1,3 +1,7 @@
+0.0400  2014-06-28      Piotr Roszatycki <dexter@cpan.org>
+
+* POSIX::strftime::Compiler replaces POSIX::strftime::GNU
+
 0.0300  2014-06-28      Piotr Roszatycki <dexter@cpan.org>
 
 * The body of request and response is not logged by default.

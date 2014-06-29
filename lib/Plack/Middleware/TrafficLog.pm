@@ -50,7 +50,7 @@ use parent 'Plack::Middleware';
 
 use Plack::Util::Accessor qw(
     with_request with_response with_date with_body with_all_chunks eol body_eol logger
-    _counter _call_id
+    _counter _call_id _strftime
 );
 
 
@@ -60,7 +60,7 @@ use Plack::Request;
 use Plack::Response;
 
 use POSIX ();
-use POSIX::strftime::GNU ();
+use POSIX::strftime::Compiler ();
 use Scalar::Util ();
 
 
@@ -76,18 +76,11 @@ sub prepare_app {
     $self->body_eol(defined $self->eol ? $self->eol : ' ') unless defined $self->body_eol;
     $self->eol('|')         unless defined $self->eol;
 
+    $self->_strftime(POSIX::strftime::Compiler->new('%d/%b/%Y:%H:%M:%S %z'));
+
     $self->_counter(0);
 };
 
-
-sub _strftime {
-    my ($self, $fmt, @time) = @_;
-    my $old_locale = POSIX::setlocale(&POSIX::LC_ALL);
-    POSIX::setlocale(&POSIX::LC_ALL, 'C');
-    my $out = POSIX::strftime::GNU::strftime($fmt, @time);
-    POSIX::setlocale(&POSIX::LC_ALL, $old_locale);
-    return $out;
-};
 
 sub _log_message {
     my ($self, $type, $env, $status, $headers, $body) = @_;
@@ -104,7 +97,7 @@ sub _log_message {
     $body =~ s/\015?\012/$body_eol/gs if defined $body_eol;
 
     my $date = $self->with_date
-        ? ('['. $self->_strftime('%d/%b/%Y:%H:%M:%S %z', localtime) . '] ')
+        ? ('['. $self->_strftime->to_string(localtime) . '] ')
         : '';
 
     $logger->( sprintf "%s[%s] [%s %s %s] [%s] %s%s%s%s%s%s\n",

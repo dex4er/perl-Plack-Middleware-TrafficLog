@@ -17,7 +17,7 @@ my $build = Module::Build->new(
     requires                => {
         'perl'                      => 5.008,
         'Plack'                     => 0,
-        'POSIX::strftime::GNU'      => 0,
+        'POSIX::strftime::Compiler' => 0,
     },
     build_requires          => {
         'Test::More'                => 0,
