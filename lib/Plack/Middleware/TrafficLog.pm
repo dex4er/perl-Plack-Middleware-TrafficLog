@@ -125,7 +125,7 @@ sub _log_request {
 
     my $req = Plack::Request->new($env);
 
-    my $status = sprintf '%s %s %s', $req->method, $req->request_uri, $req->protocol,
+    my $status = sprintf '%s %s %s', $req->method, $req->request_uri, $req->protocol;
     my $headers = $req->headers;
     my $body = $self->with_body ? $req->content : '';
 

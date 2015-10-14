@@ -1,6 +1,6 @@
 0.0401  2015-10-14      Piotr Roszatycki <dexter@cpan.org>
 
-*
+* Fix typo that shows some warnings on Perl 5.22.
 
 0.0400  2014-06-28      Piotr Roszatycki <dexter@cpan.org>
 
