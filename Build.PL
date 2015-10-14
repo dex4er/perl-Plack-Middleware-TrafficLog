@@ -35,8 +35,8 @@ my $build = Module::Build->new(
     ],
     meta_merge              => {
         resources               => {
-            bugtracker => "http://github.com/dex4er/perl-$dist/issues",
-            repository => "http://github.com/dex4er/perl-$dist",
+            bugtracker => "https://github.com/dex4er/perl-$dist/issues",
+            repository => "https://github.com/dex4er/perl-$dist.git",
         },
     },
 );
