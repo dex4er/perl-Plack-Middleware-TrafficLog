@@ -15,8 +15,8 @@ before_install:
   - source ~/travis-perl-helpers/init
   - build-perl
   - perl -V
-  - build-dist
-  - cd $BUILD_DIR
+  - pwd
+  - ls -l
 install:
   - cpanm --with-recommends --installdeps --notest --skip-satisfied git://github.com/dex4er/perl-DEXTER-Module-Skeleton
   - cpanm --with-recommends --installdeps --notest --skip-satisfied .
