@@ -43,7 +43,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.0400';
+our $VERSION = '0.0401';
 
 
 use parent 'Plack::Middleware';
@@ -269,7 +269,7 @@ Piotr Roszatycki <dexter@cpan.org>
 
 =head1 LICENSE
 
-Copyright (c) 2012, 2014 Piotr Roszatycki <dexter@cpan.org>.
+Copyright (c) 2012, 2014-2015 Piotr Roszatycki <dexter@cpan.org>.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.
