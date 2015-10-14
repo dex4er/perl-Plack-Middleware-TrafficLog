@@ -3,6 +3,10 @@
 use strict;
 use warnings;
 
+use Carp ();
+
+$SIG{__WARN__} = sub { local $Carp::CarpLevel = 1; Carp::confess("Warning: ", @_) };
+
 use Test::More tests => 64;
 
 use HTTP::Request::Common;
