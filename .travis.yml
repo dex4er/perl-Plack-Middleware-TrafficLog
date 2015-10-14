@@ -5,6 +5,7 @@ before_install:
   - sudo apt-get update -qq
   - git clone git://github.com/travis-perl/helpers ~/travis-perl-helpers
   - source ~/travis-perl-helpers/init --auto
+  - cd $BUILD_DIR
 install:
   - sudo apt-get install -qq spell
   - cpanm --with-recommends --installdeps --notest --skip-satisfied git://github.com/dex4er/perl-DEXTER-Module-Skeleton
