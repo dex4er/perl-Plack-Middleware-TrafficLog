@@ -4,7 +4,7 @@ sudo: false
 addons:
   apt:
     packages:
-    - spell
+    - aspell-en
 language: perl
 perl:
   - "dev"
