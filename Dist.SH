@@ -16,7 +16,8 @@ dist_version_from=$(${PERL} -ne 'print if /dist_version_from/' Build.PL | ${PERL
 ${PERL} -MPod::Markdown -e '$p=Pod::Markdown->new;$p->parse_from_filehandle(\*STDIN);print $p->as_markdown' \
     <"${dist_version_from:-lib/$(${PERL} -ne 'next unless /^name: /; s/^name: //; s,-,/,g; s/$/.pm/; print' META.yml)}" |
     ${PERL} -pe 'sub a { $_[0]=~tr/ /-/; $_[0] } s,[(]http://search.cpan.org/perldoc[?]([^#)]*)(#[^)]*)?[)],a("(http://metacpan.org/module/$1$2)"),eg' |
-    ${PERL} -pe 's/^# /## /' \
+    ${PERL} -pe 's/^# /## /' |
+    ${PERL} -pe 's/^\s+```/```/' \
         >>README.md
 
 ${PERL} Build manifest

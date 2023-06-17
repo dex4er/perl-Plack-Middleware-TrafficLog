@@ -206,6 +206,9 @@ __END__
 
 =item logger
 
+Sets a callback to print log message to. It prints to C<psgi.errors> output
+stream by default.
+
 =for markdown ```ini
 
     # traffic.l4p
@@ -228,9 +231,6 @@ __END__
         logger => sub { $logger->log($INFO, join '', @_) };
 
 =for markdown ```
-
-Sets a callback to print log message to. It prints to C<psgi.errors> output
-stream by default.
 
 =item with_request
 

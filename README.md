@@ -49,7 +49,10 @@ responses, only the first chunk is logged by default.
 
 - logger
 
-        ```ini
+    Sets a callback to print log message to. It prints to `psgi.errors` output
+    stream by default.
+
+```ini
 
         # traffic.l4p
         log4perl.logger.traffic = DEBUG, LogfileTraffic
@@ -58,9 +61,9 @@ responses, only the first chunk is logged by default.
         log4perl.appender.LogfileTraffic.layout = PatternLayout
         log4perl.appender.LogfileTraffic.layout.ConversionPattern = %m{chomp}%n
 
-        ```
+```
 
-        ```perl
+```perl
 
         # app.psgi
         use Log::Log4perl qw(:levels get_logger);
@@ -70,10 +73,7 @@ responses, only the first chunk is logged by default.
         enable "Plack::Middleware::TrafficLog",
             logger => sub { $logger->log($INFO, join '', @_) };
 
-        ```
-
-    Sets a callback to print log message to. It prints to `psgi.errors` output
-    stream by default.
+```
 
 - with\_request
 
