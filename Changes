@@ -1,3 +1,7 @@
+0.0402  2020-03-17      Piotr Roszatycki <dexter@cpan.org>
+
+* Provides cpanfile.
+
 0.0401  2015-10-14      Piotr Roszatycki <dexter@cpan.org>
 
 * Bugfix for typo that shows some warnings on Perl 5.22.

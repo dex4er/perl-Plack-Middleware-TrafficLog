@@ -5,6 +5,11 @@ verbose = 4
 [ControlStructures::ProhibitCascadingIfElse]
 max_elsif = 5
 
+[-ErrorHandling::RequireCarping]
+
+[InputOutput::RequireBriefOpen]
+lines = 100
+
 [Modules::ProhibitExcessMainComplexity]
 max_mccabe = 30
 
@@ -19,9 +24,6 @@ minimum_regex_length_to_complain_about = 75
 
 [Subroutines::ProhibitExcessComplexity]
 max_mccabe = 40
-
-[Subroutines::ProhibitManyArgs]
-max_arguments = 6
 
 [-Subroutines::ProhibitSubroutinePrototypes]
 
@@ -38,3 +40,13 @@ allow = all
 
 [TestingAndDebugging::ProhibitProlongedStrictureOverride]
 statements = 12
+
+[-ValuesAndExpressions::ProhibitConstantPragma]
+
+[-ValuesAndExpressions::ProhibitFiletest_f]
+[Variables::ProhibitPackageVars]
+
+add_packages = Carp
+
+[Variables::RequireLocalizedPunctuationVars]
+allow = %ENV
