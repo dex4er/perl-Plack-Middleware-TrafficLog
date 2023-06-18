@@ -1,3 +1,7 @@
+0.0403  2023-06-18      Piotr Roszatycki <dexter@cpan.org>
+
+* Correct configure requirements.
+
 0.0402  2023-06-17      Piotr Roszatycki <dexter@cpan.org>
 
 * Provides cpanfile.

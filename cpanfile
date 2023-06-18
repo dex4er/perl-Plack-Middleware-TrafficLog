@@ -3,7 +3,7 @@ requires 'perl', '5.008';
 requires 'Plack';
 requires 'POSIX::strftime::Compiler';
 
-on build => sub {
+on configure => sub {
     requires 'Module::Build';
     requires 'Module::CPANfile';
 };
