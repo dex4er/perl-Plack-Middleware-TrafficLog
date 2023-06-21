@@ -1,12 +1,16 @@
 version: 0.1
 cli:
-  version: 1.10.0
+  version: 1.11.0
 plugins:
   sources:
     - id: trunk
-      ref: v0.0.17
+      ref: v0.0.18
       uri: https://github.com/trunk-io/plugins
 lint:
+  disabled:
+    - trufflehog
+    - trivy
+    - checkov
   definitions:
     - name: perlcritic
       commands:
@@ -42,10 +46,10 @@ lint:
         - .perltidyrc
       suggest_if: config_present
   enabled:
-    - actionlint@1.6.24
+    - actionlint@1.6.25
     - git-diff-check
-    - gitleaks@8.16.4
-    - markdownlint@0.34.0
+    - gitleaks@8.17.0
+    - markdownlint@0.35.0
     - perlcritic
     - perltidy
     - prettier@2.8.8
