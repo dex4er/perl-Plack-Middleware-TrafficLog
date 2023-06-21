@@ -50,7 +50,7 @@ use 5.008;
 use strict;
 use warnings;
 
-our $VERSION = '0.0403';
+our $VERSION = '0.0404';
 
 use parent 'Plack::Middleware';
 
@@ -161,7 +161,7 @@ sub call {
     my ($self, $env) = @_;
 
     $self->_call_id(
-        sprintf '%015d',
+        sprintf '%015s',
         time % 2**16
             * 2**32
             + (Scalar::Util::looks_like_number $env->{REMOTE_PORT} ? $env->{REMOTE_PORT} : int rand 2**16) % 2**16
